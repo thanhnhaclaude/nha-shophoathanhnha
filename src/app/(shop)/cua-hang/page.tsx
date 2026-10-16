@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Breadcrumbs, Pagination, SortBar, parseListingParams } from "@/components/listing";
 import { ProductGrid } from "@/components/product-card";
 import { getAllProducts } from "@/lib/queries";
-import { seoMetadata } from "@/lib/seo";
+import { paginated, seoMetadata } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export function generateMetadata(): Promise<Metadata> {
-  return seoMetadata("/cua-hang/", { title: "Cửa hàng", description: "Tất cả mẫu hoa tươi tại Shop hoa Thanh Nhã." });
+export async function generateMetadata({ searchParams }: PageProps<"/cua-hang">): Promise<Metadata> {
+  const { page } = parseListingParams(await searchParams);
+  return paginated(await seoMetadata("/cua-hang/", { title: "Cửa hàng", description: "Tất cả mẫu hoa tươi tại Shop hoa Thanh Nhã." }), "/cua-hang/", page);
 }
 
 export default async function ShopPage({ searchParams }: PageProps<"/cua-hang">) {

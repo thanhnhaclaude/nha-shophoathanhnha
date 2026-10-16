@@ -7,7 +7,7 @@ import { seoMetadata } from "@/lib/seo";
 export const dynamic = "force-dynamic";
 
 export function generateMetadata(): Promise<Metadata> {
-  return seoMetadata("/danh-sach/", { title: "Danh sách" });
+  return seoMetadata("/danh-sach/", { title: "Danh sách yêu thích", noindex: true });
 }
 
 export default function WishlistPage() {

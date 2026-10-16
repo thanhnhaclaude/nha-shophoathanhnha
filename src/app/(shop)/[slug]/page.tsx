@@ -27,7 +27,7 @@ import {
   getRecentPosts,
   getRelatedProducts,
 } from "@/lib/queries";
-import { canonicalPath, seoMetadata } from "@/lib/seo";
+import { canonicalPath, paginated, seoMetadata } from "@/lib/seo";
 import { cleanHtml, normalizeHeadings, plainText, removeDuplicateTitleHeading, splitProductBlocks } from "@/lib/sanitize";
 import { site } from "@/lib/site";
 
@@ -45,8 +45,9 @@ async function getVisibleCms(slug: string) {
   return cms;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const { page } = parseListingParams(await searchParams);
   const path = canonicalPath(slug);
   const cms = await getVisibleCms(slug);
   if (cms) {
@@ -64,18 +65,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return seoMetadata(path, {
       title: product.name,
       description: plainText(product.shortDescription || product.description) || site.description,
-      openGraph: { images: product.images.slice(0, 1) },
+      openGraph: product.images.length ? { images: product.images.slice(0, 1) } : undefined,
     });
   }
   const category = await getCategoryBySlug(slug);
   if (category) {
-    return seoMetadata(path, {
+    return paginated(await seoMetadata(path, {
       title: category.name,
       description: plainText(category.description) || `${category.name} tại Shop hoa tươi Thanh Nhã. Giao hoa hỏa tốc, miễn phí thiệp & băng rôn.`,
-    });
+    }), path, page);
   }
   const postCategory = await getPostCategoryBySlug(slug);
-  if (postCategory) return seoMetadata(path, { title: postCategory.name, description: plainText(postCategory.description) || undefined });
+  if (postCategory) return paginated(await seoMetadata(path, { title: postCategory.name, description: plainText(postCategory.description) || `${postCategory.name}: kinh nghiệm chọn hoa, ý nghĩa các loài hoa và địa chỉ shop hoa tươi Thanh Nhã giao hoa tận nơi.` }), path, page);
   return {};
 }
 

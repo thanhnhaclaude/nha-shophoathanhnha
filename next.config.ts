@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Giữ dấu "/" cuối URL giống hệt WordPress cũ (vd. /hoa-bo/) để Google không phải index lại
   trailingSlash: true,
+  // Luôn đặt title/description/canonical trong <head> (không stream) cho mọi trình duyệt và bot,
+  // để Google, Facebook, Zalo và công cụ SEO đều đọc được ngay
+  htmlLimitedBots: /.*/,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "hoathanhnha.com", pathname: "/wp-content/uploads/**" },
@@ -22,6 +25,8 @@ const nextConfig: NextConfig = {
       { source: "/:slug/feed", destination: "/:slug/", permanent: true },
       { source: "/product-category/:slug", destination: "/:slug/", permanent: true },
       { source: "/category/:slug", destination: "/:slug/", permanent: true },
+      // Tìm kiếm WordPress: /?s=hoa+hong -> /tim-kiem/?q=hoa+hong
+      { source: "/", has: [{ type: "query", key: "s", value: "(?<s>.*)" }], destination: "/tim-kiem/?q=:s", permanent: true },
     ];
   },
 };
