@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { findOrderByCodeAndPhone } from "@/lib/orders";
+import { findOrderByCodeAndPhone, orderPrefix } from "@/lib/orders";
 
 export const metadata: Metadata = { title: "Tra cứu đơn hàng" };
 export const dynamic = "force-dynamic";
@@ -19,7 +19,7 @@ export default async function LookupPage({ searchParams }: PageProps<"/tra-cuu-d
   return (
     <div className="container-x max-w-lg py-14">
       <h1 className="heading-display text-4xl">Tra cứu đơn hàng</h1>
-      <p className="mt-2 text-muted">Nhập mã đơn (ví dụ TN123456) và số điện thoại người đặt hoặc người nhận.</p>
+      <p className="mt-2 text-muted">Nhập mã đơn (ví dụ {orderPrefix()}123456) và số điện thoại người đặt hoặc người nhận.</p>
       <form action={lookup} className="mt-8 space-y-4 rounded-3xl border border-border bg-surface p-6">
         <div>
           <label htmlFor="code" className="label">

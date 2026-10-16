@@ -4,7 +4,7 @@ export const site = {
   title: "Shop hoa tươi Thanh Nhã: Đặt hoa online, giao hoa miễn phí",
   description:
     "Shop hoa tươi Thanh Nhã – đặt hoa online, giao hoa hỏa tốc 60 phút, miễn phí thiệp & băng rôn. Hoa khai trương, hoa sinh nhật, hoa chia buồn, lan hồ điệp trên 63 tỉnh thành.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://hoathanhnha.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://shophoathanhnha.com",
   phone: "0396727374",
   phoneDisplay: "0396.72.73.74",
   zalo: "https://zalo.me/0396727374",

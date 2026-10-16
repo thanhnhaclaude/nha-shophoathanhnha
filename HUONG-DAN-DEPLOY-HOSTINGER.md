@@ -1,4 +1,4 @@
-# Hướng dẫn deploy hoathanhnha.com lên Hostinger
+# Hướng dẫn deploy shophoathanhnha.com lên Hostinger
 
 Áp dụng cho gói **Business / Cloud** có mục **Node.js** trong hPanel.
 
@@ -17,7 +17,7 @@ Trên máy bạn, thư mục `deploy/` (không có trên GitHub) chứa sẵn:
 2. Tạo database mới và user mới. Đặt mật khẩu **chỉ gồm chữ và số** để không phải mã hóa ký tự đặc biệt.
 3. Ghi lại *tên database*, *user*, *mật khẩu*.
 4. Mở `deploy/hostinger.env` và điền 3 dòng `DB_USER`, `DB_PASSWORD`, `DB_NAME` (giữ `DB_HOST=localhost`, `DB_PORT=3306`). Không cần `DATABASE_URL`.
-   - Kiểm tra kết nối sau khi deploy: mở `https://hoathanhnha.com/api/health/` → `"status":"ok"`.
+   - Kiểm tra kết nối sau khi deploy: mở `https://shophoathanhnha.com/api/health/` → `"status":"ok"`.
 
 ## Bước 2: Nhập dữ liệu
 
@@ -27,7 +27,7 @@ Trên máy bạn, thư mục `deploy/` (không có trên GitHub) chứa sẵn:
 
 ## Bước 3: Tạo ứng dụng Node.js từ GitHub
 
-1. hPanel → **Websites → Add website → Node.js Apps** (hoặc mở website hoathanhnha.com → **Node.js**).
+1. hPanel → **Websites → Add website → Node.js Apps** (hoặc mở website shophoathanhnha.com → **Node.js**).
 2. Chọn **Import Git repository** và đăng nhập GitHub khi được hỏi. Chọn repo `thanhnhaclaude/nha-shophoathanhnha`, nhánh `main`.
 3. Cấu hình:
    - **Node.js version:** 22.x (tối thiểu 20.9)
@@ -46,15 +46,15 @@ Trong phần **Environment variables** của ứng dụng, thêm **từng dòng*
 ## Bước 5: Deploy và gắn tên miền
 
 1. Bấm **Deploy**. Lần đầu mất vài phút, vì repo có khoảng 360 MB ảnh.
-2. Trỏ tên miền **hoathanhnha.com** về ứng dụng này và bật **SSL** (hPanel → **Security → SSL**).
-3. Tạo thư mục ảnh tải lên (đúng giá trị `UPLOAD_DIR`) bằng **File Manager**, ví dụ `/home/<user>/uploads-hoathanhnha`.
+2. Trỏ tên miền **shophoathanhnha.com** về ứng dụng này và bật **SSL** (hPanel → **Security → SSL**).
+3. Tạo thư mục ảnh tải lên (đúng giá trị `UPLOAD_DIR`) bằng **File Manager**, ví dụ `/home/<user>/uploads-shophoathanhnha`.
 
 ## Bước 6: Kiểm tra sau khi chạy
 
-- [ ] https://hoathanhnha.com/ hiển thị trang chủ có ảnh
-- [ ] https://hoathanhnha.com/hoa-bo/ hiển thị danh mục
-- [ ] https://hoathanhnha.com/sitemap_index.xml có 4 sitemap
-- [ ] https://hoathanhnha.com/admin/ đăng nhập được: user `admin`, mật khẩu ghi trong `deploy/hostinger-env.txt`
+- [ ] https://shophoathanhnha.com/ hiển thị trang chủ có ảnh
+- [ ] https://shophoathanhnha.com/hoa-bo/ hiển thị danh mục
+- [ ] https://shophoathanhnha.com/sitemap_index.xml có 4 sitemap
+- [ ] https://shophoathanhnha.com/admin/ đăng nhập được: user `admin`, mật khẩu ghi trong `deploy/hostinger-env.txt`
 - [ ] Đặt thử một đơn VietQR: mã QR hiện đúng số tài khoản
 - [ ] Trang quản trị → Sản phẩm → sửa một sản phẩm → **Tải ảnh lên** chạy được
 
@@ -62,23 +62,23 @@ Trong phần **Environment variables** của ứng dụng, thêm **từng dòng*
 
 1. Đăng ký tại https://my.sepay.vn, liên kết tài khoản **VCB 1066354898**.
 2. **Webhooks → Thêm webhook**:
-   - Sự kiện: *Có tiền vào* · URL: `https://hoathanhnha.com/api/sepay/webhook/` (**có dấu `/` cuối**)
+   - Sự kiện: *Có tiền vào* · URL: `https://shophoathanhnha.com/api/sepay/webhook/` (**có dấu `/` cuối**)
    - Kiểu chứng thực: **API Key**. Tạo một chuỗi ngẫu nhiên, dán vào SePay và vào biến `SEPAY_API_KEY` trên Hostinger.
-3. Đặt thử một đơn VietQR nhỏ và chuyển khoản: trong vài giây trang đơn hàng tự chuyển sang **Đã thanh toán**, đơn trong admin sang **Đã xác nhận**.
+3. Mã đơn của website này bắt đầu bằng **TN** (`ORDER_CODE_PREFIX=TN`). Website khác dùng chung tài khoản VCB phải có tiền tố khác và webhook riêng, để không xác nhận nhầm đơn của nhau.
+4. Đặt thử một đơn VietQR nhỏ và chuyển khoản: trong vài giây trang đơn hàng tự chuyển sang **Đã thanh toán**, đơn trong admin sang **Đã xác nhận**.
    - Chuyển thiếu tiền: đơn giữ *Chưa thanh toán*, ghi chú admin ghi rõ số tiền đã nhận.
 
 ## Bước 8: Email báo đơn
 
-1. hPanel → **Emails** → tạo hộp thư, ví dụ `donhang@hoathanhnha.com`.
-2. Khai báo `SMTP_HOST=smtp.hostinger.com`, `SMTP_PORT=465`, `SMTP_USER=donhang@hoathanhnha.com`, `SMTP_PASS=<mật khẩu hộp thư>`, `SHOP_EMAIL=<hộp thư nhận thông báo>`.
+1. hPanel → **Emails** → tạo hộp thư, ví dụ `donhang@shophoathanhnha.com`.
+2. Khai báo `SMTP_HOST=smtp.hostinger.com`, `SMTP_PORT=465`, `SMTP_USER=donhang@shophoathanhnha.com`, `SMTP_PASS=<mật khẩu hộp thư>`, `SHOP_EMAIL=<hộp thư nhận thông báo>`.
 3. Mỗi đơn mới: shop nhận email báo đơn, khách (nếu nhập email) nhận email xác nhận. Khi SePay báo tiền về, cả hai nhận thêm email “Đã thanh toán”.
-4. Kiểm tra `https://hoathanhnha.com/api/health/`: các mục `SMTP_*` và `SEPAY_API_KEY` phải là `true`.
+4. Kiểm tra `https://shophoathanhnha.com/api/health/`: các mục `SMTP_*` và `SEPAY_API_KEY` phải là `true`.
 
-## Bước 9: Thay WordPress trên tên miền chính
+## Bước 9: Google
 
-1. **Sao lưu WordPress** trước: hPanel → *Backups* (hoặc tải thư mục `public_html` + export database).
-2. Đường dẫn của website mới giống hệt WordPress, nên Google không phải index lại. Không cần chuyển hướng 301 hay Change of Address.
-3. Sau khi trỏ tên miền: mở Google Search Console của **hoathanhnha.com**, gửi lại sitemap `https://hoathanhnha.com/sitemap_index.xml` và theo dõi mục *Pages* trong 1–2 tuần.
+1. Thêm **shophoathanhnha.com** vào Google Search Console và gửi sitemap `https://shophoathanhnha.com/sitemap_index.xml`.
+2. Lưu ý: hoathanhnha.com và shophoathanhnha.com có cùng sản phẩm và bài viết. Google thường chỉ xếp hạng một trong hai bản trùng nội dung, nên nên viết lại dần bài viết/mô tả cho một trong hai website.
 
 ---
 

@@ -3,14 +3,15 @@ import { timingSafeEqual } from "node:crypto";
 import { and, eq } from "drizzle-orm";
 import { db, orders } from "@/lib/db";
 import { sendPaidEmails } from "@/lib/mailer";
+import { orderPrefix } from "@/lib/orders";
 
 export const dynamic = "force-dynamic";
 
 /**
  * Webhook SePay (https://docs.sepay.vn): SePay gọi vào đây mỗi khi tài khoản VCB có giao dịch.
  * Cấu hình trên my.sepay.vn → Webhooks:
- *   URL: https://hoathanhnha.com/api/sepay/webhook/  · Kiểu chứng thực: API Key  · Key = SEPAY_API_KEY
- * Nội dung chuyển khoản chứa mã đơn (TN123456) → đơn đủ tiền được đánh dấu "Đã thanh toán".
+ *   URL: https://<tên miền>/api/sepay/webhook/  · Kiểu chứng thực: API Key  · Key = SEPAY_API_KEY
+ * Nội dung chuyển khoản chứa mã đơn (vd. TN123456, tiền tố theo ORDER_CODE_PREFIX) → đơn đủ tiền được đánh dấu "Đã thanh toán".
  */
 type SepayPayload = {
   id: number;
@@ -43,10 +44,11 @@ export async function POST(req: NextRequest) {
   if (body.transferType !== "in" || !(body.transferAmount > 0)) return NextResponse.json({ success: true, matched: false });
 
   const text = `${body.code ?? ""} ${body.content ?? ""} ${body.description ?? ""}`.toUpperCase();
-  const code = text.match(/TN\s?(\d{6})/)?.[1];
+  const prefix = orderPrefix();
+  const code = text.match(new RegExp(`${prefix}\\s?(\\d{6})(?!\\d)`))?.[1];
   if (!code) return NextResponse.json({ success: true, matched: false });
 
-  const [order] = await db.select().from(orders).where(eq(orders.code, `TN${code}`)).limit(1);
+  const [order] = await db.select().from(orders).where(eq(orders.code, `${prefix}${code}`)).limit(1);
   if (!order) return NextResponse.json({ success: true, matched: false });
   if (order.paymentStatus === "paid") return NextResponse.json({ success: true, matched: true, already: true });
 

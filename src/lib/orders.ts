@@ -39,9 +39,18 @@ function todayInVN() {
   return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Ho_Chi_Minh" });
 }
 
+/**
+ * Tiền tố mã đơn (mặc định "TN"). Mỗi website dùng chung tài khoản ngân hàng phải có tiền tố riêng,
+ * để webhook SePay của website này không nhận nhầm giao dịch của website kia.
+ */
+export function orderPrefix() {
+  const p = process.env.ORDER_CODE_PREFIX?.trim().toUpperCase();
+  return p && /^[A-Z]{2,4}$/.test(p) ? p : "TN";
+}
+
 function makeCode() {
-  // TN + 6 chữ số ngẫu nhiên, dễ đọc khi chuyển khoản
-  return `TN${String(randomBytes(4).readUInt32BE() % 1_000_000).padStart(6, "0")}`;
+  // Tiền tố + 6 chữ số ngẫu nhiên, dễ đọc khi chuyển khoản
+  return `${orderPrefix()}${String(randomBytes(4).readUInt32BE() % 1_000_000).padStart(6, "0")}`;
 }
 
 /** Tạo đơn hàng. Giá luôn được tính lại từ CSDL, không tin giá gửi từ trình duyệt. */
