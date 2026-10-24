@@ -1,0 +1,11 @@
+<%- include('_top') %>
+<h1>Tổng quan</h1>
+<div class="stats">
+  <div class="stat"><small>Đơn mới hôm nay</small><b><%= stats.today %></b></div>
+  <div class="stat"><small>Cần giao hôm nay</small><b><%= stats.deliverToday %></b></div>
+  <div class="stat"><small>Doanh thu tháng này</small><b><%= formatVND(stats.monthRevenue) %></b></div>
+  <div class="stat"><small>Sản phẩm đang bán</small><b><%= stats.products %></b></div>
+</div>
+<div class="admin-top"><h2 style="font-size:1.6rem;margin:0">Đơn gần đây</h2><a class="link" href="/admin/don-hang">Tất cả đơn</a></div>
+<%- include('_orders-table', { list: recent }) %>
+<%- include('_bottom') %>

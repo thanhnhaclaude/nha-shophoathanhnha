@@ -1,0 +1,37 @@
+<%- include('_top') %>
+<div class="admin-top"><h1>Đơn <%= order.code %></h1><a class="link" href="/admin/don-hang">← Danh sách đơn</a></div>
+<% if (saved) { %><div class="alert alert-success">Đã lưu thay đổi.</div><% } %>
+<div style="display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:start" class="order-admin">
+  <div>
+    <div class="panel">
+      <h2>Sản phẩm</h2>
+      <% order.items.forEach((i) => { %><div class="mini-line"><img src="<%= i.image %>" alt="" width="56" height="70"><div><strong><%= i.name %></strong><small><%= i.variant %> · SL <%= i.qty %> · <%= formatVND(i.price) %></small></div><strong><%= formatVND(i.price * i.qty) %></strong></div><% }) %>
+      <div class="summary-row"><span>Phí giao</span><span><%= formatVND(order.shipping) %></span></div>
+      <div class="summary-row total"><span>Tổng</span><span><%= formatVND(order.total) %></span></div>
+    </div>
+    <div class="panel">
+      <h2>Giao hàng</h2>
+      <dl class="kv">
+        <dt>Người gửi</dt><dd><%= order.sender.name %> · <a class="link" href="tel:<%= order.sender.phone %>"><%= order.sender.phone %></a><%= order.sender.email ? ' · ' + order.sender.email : '' %></dd>
+        <dt>Người nhận</dt><dd><%= order.recipient.name %> · <a class="link" href="tel:<%= order.recipient.phone %>"><%= order.recipient.phone %></a></dd>
+        <dt>Địa chỉ</dt><dd><%= [order.recipient.address, order.recipient.district, order.recipient.city].filter(Boolean).join(', ') %></dd>
+        <dt>Thời gian</dt><dd><%= order.delivery.date.split('-').reverse().join('/') %> · <%= order.delivery.slot %></dd>
+        <dt>Tặng bất ngờ</dt><dd><%= order.surprise ? 'Có – không gọi trước người nhận' : 'Không' %></dd>
+        <dt>Lời nhắn thiệp</dt><dd><%= order.cardMessage || '—' %></dd>
+        <dt>Ghi chú</dt><dd><%= order.note || '—' %></dd>
+        <dt>Thanh toán</dt><dd><%= order.paymentMethod === 'bank' ? 'Chuyển khoản (nội dung: ' + order.code + ')' : 'COD' %></dd>
+      </dl>
+    </div>
+  </div>
+  <form class="panel" method="post" style="display:grid;gap:16px">
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <h2>Xử lý đơn</h2>
+    <div class="field"><label for="st">Trạng thái</label><select class="input" id="st" name="status"><% Object.entries(STATUS).forEach(([k, l]) => { %><option value="<%= k %>" <%= order.status === k ? 'selected' : '' %>><%= l %></option><% }) %></select></div>
+    <div class="field"><label for="ps">Thanh toán</label><select class="input" id="ps" name="paymentStatus"><% Object.entries(PAYMENT_STATUS).forEach(([k, l]) => { %><option value="<%= k %>" <%= order.paymentStatus === k ? 'selected' : '' %>><%= l %></option><% }) %></select></div>
+    <div class="field"><label for="an">Ghi chú nội bộ</label><textarea class="textarea" id="an" name="adminNote"><%= order.adminNote || '' %></textarea></div>
+    <button class="btn btn-primary" type="submit">Lưu</button>
+    <a class="btn btn-light" style="border:1px solid var(--line)" href="/don-hang/<%= order.code %>?k=<%= order.accessKey %>" target="_blank" rel="noopener">Trang đơn của khách ↗</a>
+  </form>
+</div>
+<style>@media (max-width:900px){.order-admin{grid-template-columns:1fr!important}}</style>
+<%- include('_bottom') %>

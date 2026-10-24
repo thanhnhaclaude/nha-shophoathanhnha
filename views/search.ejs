@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+<section class="container page-hero">
+  <h1><%= q ? 'Kết quả cho “' + q + '”' : 'Tìm kiếm hoa' %></h1>
+  <form class="search" action="/tim-kiem" role="search" style="display:block;max-width:560px;margin-top:16px">
+    <label class="sr-only" for="q3">Tìm hoa</label>
+    <input id="q3" name="q" type="search" value="<%= q %>" placeholder="Hoa hồng, hướng dương, lan hồ điệp…">
+    <button type="submit" aria-label="Tìm kiếm"><svg class="icon"><use href="#i-search"/></svg></button>
+  </form>
+</section>
+<section class="container" style="padding-bottom:60px">
+  <% if (items.length) { %>
+  <p class="muted"><%= items.length %> mẫu phù hợp</p>
+  <div class="product-grid"><% items.forEach((p) => { %><%- include('partials/product-card', { p }) %><% }) %></div>
+  <% } else if (q) { %>
+  <div class="empty"><p>Chưa tìm thấy mẫu phù hợp. Thử từ khóa khác hoặc gọi <a class="link" href="tel:<%= site.phone %>"><%= site.phoneDisplay %></a> để florist tư vấn.</p></div>
+  <% } %>
+  <div class="filter-pills" style="margin-top:28px">
+    <% navCategories.forEach((c) => { %><a class="pill" href="/danh-muc/<%= c.slug %>"><%= c.name %></a><% }) %>
+  </div>
+</section>
+<%- include('partials/footer') %>

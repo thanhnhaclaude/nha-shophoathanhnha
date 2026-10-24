@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+<section class="container page-hero" style="padding-bottom:0"><h1>Giỏ hàng</h1></section>
+<section class="container cart-layout" data-cart-page data-free-ship="<%= site.freeShipFrom %>">
+  <div class="panel">
+    <div data-cart-lines><p class="muted">Đang tải giỏ hàng…</p></div>
+  </div>
+  <aside class="panel summary" aria-label="Tóm tắt đơn">
+    <h2>Tóm tắt</h2>
+    <div class="summary-row"><span>Tạm tính</span><span data-subtotal>0đ</span></div>
+    <div class="summary-row"><span>Phí giao nội thành</span><span data-shipping>0đ</span></div>
+    <div class="free-ship" data-free-ship-box hidden></div>
+    <div class="summary-row total"><span>Tổng cộng</span><span data-total>0đ</span></div>
+    <a class="btn btn-primary btn-block" href="/thanh-toan" data-checkout-btn style="margin-top:16px">Tiến hành đặt hàng <svg class="icon"><use href="#i-arrow"/></svg></a>
+    <a class="btn btn-light btn-block" href="/" style="margin-top:10px">Tiếp tục chọn hoa</a>
+  </aside>
+</section>
+<%- include('partials/footer') %>

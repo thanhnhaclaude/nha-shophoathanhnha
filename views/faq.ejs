@@ -1,0 +1,9 @@
+<%- include('partials/header') %>
+<section class="container page-hero" style="text-align:center"><span class="eyebrow">Giải đáp</span><h1>Câu hỏi thường gặp khi đặt hoa</h1></section>
+<section class="container" style="padding-bottom:70px">
+  <div class="faq-list">
+    <% faq.forEach((f) => { %><details><summary><%= f.q %><svg class="icon"><use href="#i-plus"/></svg></summary><p><%= f.a %></p></details><% }) %>
+  </div>
+  <p class="muted" style="text-align:center;margin-top:28px">Chưa thấy câu trả lời? Gọi <a class="link" href="tel:<%= site.phone %>"><%= site.phoneDisplay %></a> hoặc <a class="link" href="/lien-he">gửi tin nhắn</a>.</p>
+</section>
+<%- include('partials/footer') %>

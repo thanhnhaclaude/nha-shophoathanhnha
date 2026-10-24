@@ -1,0 +1,23 @@
+<%- include('_top') %>
+<h1>Cài đặt</h1>
+<% if (saved) { %><div class="alert alert-success">Đã lưu cài đặt.</div><% } %>
+<% const b = s.bank || {}; %>
+<form class="form-card" method="post">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="field"><label for="ann">Thanh thông báo đầu trang</label><input class="input" id="ann" name="announcement" value="<%= s.announcement || '' %>" maxlength="200"></div>
+  <h2 style="font-size:1.5rem;margin:8px 0 0">Tài khoản nhận chuyển khoản (VietQR)</h2>
+  <p class="hint" style="margin:0">Mã BIN ngân hàng tra tại vietqr.io (ví dụ Vietcombank 970436, Techcombank 970407, MB 970422, ACB 970416).</p>
+  <div class="form-grid">
+    <div class="field"><label for="bn">Tên ngân hàng</label><input class="input" id="bn" name="bankName" value="<%= b.bankName || '' %>" placeholder="Vietcombank"></div>
+    <div class="field"><label for="bb">Mã BIN</label><input class="input" id="bb" name="bankBin" value="<%= b.bin || '' %>" inputmode="numeric" placeholder="970436"></div>
+    <div class="field"><label for="ba">Số tài khoản</label><input class="input" id="ba" name="bankAccount" value="<%= b.account || '' %>" inputmode="numeric"></div>
+    <div class="field"><label for="bh">Tên chủ tài khoản (không dấu)</label><input class="input" id="bh" name="bankAccountName" value="<%= b.name || '' %>"></div>
+  </div>
+  <h2 style="font-size:1.5rem;margin:8px 0 0">Theo dõi & xác minh</h2>
+  <div class="form-grid">
+    <div class="field"><label for="ga">Google Analytics 4 (Measurement ID)</label><input class="input" id="ga" name="gaId" value="<%= s.gaId || '' %>" placeholder="G-XXXXXXXXXX"></div>
+    <div class="field"><label for="gsc">Mã xác minh Google Search Console (thẻ meta)</label><input class="input" id="gsc" name="gscVerification" value="<%= s.gscVerification || '' %>"></div>
+  </div>
+  <div><button class="btn btn-primary" type="submit">Lưu cài đặt</button></div>
+</form>
+<%- include('_bottom') %>

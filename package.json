@@ -1,0 +1,28 @@
+{
+  "name": "shophoathanhnha",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Website bán hoa tươi Shop Hoa Thanh Nhã – Node.js + Express, render phía máy chủ, chuẩn SEO.",
+  "main": "server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20.12"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "build": "node scripts/build.js",
+    "hash-password": "node scripts/hash-password.js",
+    "check": "node scripts/smoke-test.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.7.5",
+    "cookie-parser": "^1.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "marked": "^12.0.2",
+    "multer": "^2.0.2",
+    "nodemailer": "^6.10.1"
+  }
+}

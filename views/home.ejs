@@ -1,0 +1,191 @@
+<%- include('partials/header', { preload: '/images/site/hero-bo-hoa.webp' }) %>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">Hoa tươi cắm mới mỗi sáng</span>
+      <h1>Shop hoa tươi Thanh Nhã, <em>thay lời yêu thương</em></h1>
+      <p class="hero-lead">Đặt hoa online trong 2 phút. Florist của Thanh Nhã cắm theo đúng mẫu, gửi ảnh cho bạn duyệt trước khi giao, và giao tận tay người nhận trong 1–3 giờ ở nội thành.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#hoa-noi-bat">Chọn hoa ngay <svg class="icon"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-ghost" href="tel:<%= site.phone %>"><svg class="icon"><use href="#i-phone"/></svg><%= site.phoneDisplay %></a>
+      </div>
+      <div class="trust-row">
+        <span><svg class="icon"><use href="#i-truck"/></svg>Giao nhanh 1–3 giờ</span>
+        <span><svg class="icon"><use href="#i-camera"/></svg>Gửi ảnh trước khi giao</span>
+        <span><svg class="icon"><use href="#i-pen"/></svg>Thiệp viết tay miễn phí</span>
+      </div>
+    </div>
+    <div class="hero-media">
+      <div class="hero-arch">
+        <img src="/images/site/hero-bo-hoa.webp" alt="Bình hoa hồng đào và cẩm chướng cắm tại Shop Hoa Thanh Nhã" width="1600" height="1100" fetchpriority="high">
+      </div>
+      <div class="hero-badge"><span><b><%= site.stores.reduce((n, s) => n + s.addresses.length, 0) %></b>cửa hàng<br>toàn quốc</span></div>
+      <div class="hero-float">
+        <span class="hero-float-ico"><svg class="icon"><use href="#i-clock"/></svg></span>
+        <span><strong>Mở cửa <%= site.hours %></strong><small>Nhận đơn cả ngày lễ, Tết và Chủ nhật</small></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight">
+  <div class="container usp-grid">
+    <div class="usp reveal"><span class="usp-ico"><svg class="icon"><use href="#i-leaf"/></svg></span><div><h3>Hoa nhập mới mỗi ngày</h3><p>Hoa Đà Lạt và hoa nhập khẩu tuyển chọn, dưỡng lạnh trước khi cắm.</p></div></div>
+    <div class="usp reveal"><span class="usp-ico"><svg class="icon"><use href="#i-truck"/></svg></span><div><h3>Miễn phí giao nội thành</h3><p>Cho đơn từ <%= formatVND(site.freeShipFrom) %>, giao đúng khung giờ bạn chọn.</p></div></div>
+    <div class="usp reveal"><span class="usp-ico"><svg class="icon"><use href="#i-shield"/></svg></span><div><h3>Đúng mẫu hoặc hoàn tiền</h3><p>Hoa dập, héo hay sai mẫu được đổi bó mới hoặc hoàn tiền 100%.</p></div></div>
+    <div class="usp reveal"><span class="usp-ico"><svg class="icon"><use href="#i-wallet"/></svg></span><div><h3>Thanh toán linh hoạt</h3><p>Chuyển khoản VietQR hoặc trả tiền mặt khi nhận hoa.</p></div></div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="h-cats">
+  <div class="container">
+    <div class="section-head">
+      <div><span class="eyebrow">Theo dịp tặng</span><h2 id="h-cats">Bạn đang tìm hoa cho dịp nào?</h2></div>
+      <p>Mỗi dịp một thông điệp. Chọn danh mục để xem những mẫu florist đề xuất.</p>
+    </div>
+    <div class="cat-grid">
+      <% navCategories.forEach((c) => { %>
+      <a class="cat-tile reveal" href="/danh-muc/<%= c.slug %>">
+        <img src="<%= c.image %>" alt="<%= c.name %> tại Shop Hoa Thanh Nhã" width="450" height="600" loading="lazy" decoding="async">
+        <div class="cat-tile-body"><h3><%= c.name %></h3><span>Xem mẫu <svg class="icon"><use href="#i-arrow"/></svg></span></div>
+      </a>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="hoa-noi-bat" aria-labelledby="h-featured">
+  <div class="container">
+    <div class="section-head">
+      <div><span class="eyebrow">Được chọn nhiều</span><h2 id="h-featured">Mẫu hoa nổi bật tuần này</h2></div>
+      <a class="link" href="/danh-muc/bo-hoa-tuoi">Xem tất cả <svg class="icon"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="product-grid">
+      <% featured.forEach((p) => { %><%- include('partials/product-card', { p }) %><% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="occasion reveal">
+      <img src="/images/site/tuong-hoa-hong.webp" alt="" width="1800" height="900" loading="lazy" decoding="async">
+      <div class="occasion-body">
+        <span class="eyebrow">Hoa cho mọi khoảnh khắc</span>
+        <h2>Một bó hoa nói thay những điều khó nói</h2>
+        <p>Sinh nhật, kỷ niệm, lời xin lỗi hay câu cảm ơn: chọn dịp, viết lời nhắn, Thanh Nhã lo phần còn lại.</p>
+        <div class="chips">
+          <a class="chip" href="/danh-muc/hoa-sinh-nhat">Sinh nhật</a>
+          <a class="chip" href="/danh-muc/hoa-tinh-yeu">Kỷ niệm, tỏ tình</a>
+          <a class="chip" href="/danh-muc/hoa-khai-truong">Khai trương</a>
+          <a class="chip" href="/danh-muc/hoa-chuc-mung">Tốt nghiệp, thăng chức</a>
+          <a class="chip" href="/danh-muc/hoa-cuoi">Ngày cưới</a>
+          <a class="chip" href="/danh-muc/hoa-chia-buon">Chia buồn</a>
+        </div>
+        <a class="btn btn-light" href="tel:<%= site.phone %>"><svg class="icon"><use href="#i-phone"/></svg>Nhờ florist tư vấn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-tight" aria-labelledby="h-steps">
+  <div class="container">
+    <div class="section-head center"><span class="eyebrow">Đặt hoa thật dễ</span><h2 id="h-steps">4 bước để hoa đến tay người nhận</h2></div>
+    <div class="steps">
+      <div class="step reveal"><svg class="icon"><use href="#i-flower"/></svg><h3>Chọn mẫu hoa</h3><p>Chọn theo dịp hoặc ngân sách, thêm bản Sang trọng nếu muốn bó lớn hơn.</p></div>
+      <div class="step reveal"><svg class="icon"><use href="#i-pen"/></svg><h3>Viết lời nhắn</h3><p>Nhập lời chúc, shop viết tay lên thiệp đính kèm bó hoa.</p></div>
+      <div class="step reveal"><svg class="icon"><use href="#i-camera"/></svg><h3>Duyệt ảnh thật</h3><p>Nhận ảnh bó hoa hoàn thiện qua Zalo trước khi giao.</p></div>
+      <div class="step reveal"><svg class="icon"><use href="#i-check-circle"/></svg><h3>Giao tận tay</h3><p>Giao đúng giờ, báo lại cho bạn khi người nhận đã nhận hoa.</p></div>
+    </div>
+  </div>
+</section>
+
+<% if (bestsellers.length) { %>
+<section class="section" aria-labelledby="h-best">
+  <div class="container">
+    <div class="section-head">
+      <div><span class="eyebrow">Khách đặt lại nhiều nhất</span><h2 id="h-best">Bán chạy</h2></div>
+    </div>
+    <div class="product-grid">
+      <% bestsellers.forEach((p) => { %><%- include('partials/product-card', { p }) %><% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<section class="section section-alt" aria-labelledby="h-story">
+  <div class="container split">
+    <div class="split-media reveal">
+      <img src="/images/site/cua-hang-hoa.webp" alt="Không gian cửa hàng hoa tươi Thanh Nhã" width="1400" height="1000" loading="lazy" decoding="async">
+      <div class="stamp"><b><%= site.hours %></b>mở cửa mỗi ngày</div>
+    </div>
+    <div>
+      <span class="eyebrow">Về Thanh Nhã</span>
+      <h2 id="h-story">Mỗi bó hoa là một lời nhắn được gói cẩn thận</h2>
+      <p class="muted">Thanh Nhã bắt đầu từ một tiệm hoa nhỏ với mong muốn giúp mọi người gửi yêu thương dễ dàng hơn. Ngày nay, đội ngũ florist của shop vẫn giữ thói quen ấy: chọn từng cành hoa vào buổi sáng, cắm bằng tay và kiểm tra lại trước khi giao.</p>
+      <ul class="checklist">
+        <li><svg class="icon"><use href="#i-check"/></svg><span>Hoa được dưỡng lạnh và xử lý gốc để tươi lâu hơn 2–3 ngày.</span></li>
+        <li><svg class="icon"><use href="#i-check"/></svg><span>Mẫu trên website là ảnh minh họa, hoa thật luôn giữ đúng tông, dáng và giá trị.</span></li>
+        <li><svg class="icon"><use href="#i-check"/></svg><span>Hỗ trợ xuất hóa đơn VAT cho doanh nghiệp.</span></li>
+      </ul>
+      <a class="btn btn-dark" href="/gioi-thieu">Câu chuyện của chúng tôi</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="h-blog">
+  <div class="container">
+    <div class="section-head">
+      <div><span class="eyebrow">Cẩm nang hoa</span><h2 id="h-blog">Hiểu hoa để tặng đúng ý</h2></div>
+      <a class="link" href="/blog">Tất cả bài viết <svg class="icon"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="post-grid">
+      <% posts.forEach((post) => { %>
+      <article class="post-card reveal">
+        <a href="/blog/<%= post.slug %>"><img src="<%= post.image %>" alt="<%= post.title %>" width="1200" height="750" loading="lazy" decoding="async"></a>
+        <time datetime="<%= post.publishedAt %>"><%= formatDate(post.publishedAt) %></time>
+        <h3><a href="/blog/<%= post.slug %>"><%= post.title %></a></h3>
+        <p><%= post.excerpt %></p>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" aria-labelledby="h-faq">
+  <div class="container">
+    <div class="section-head center"><span class="eyebrow">Giải đáp</span><h2 id="h-faq">Câu hỏi thường gặp</h2></div>
+    <div class="faq-list">
+      <% faq.forEach((f, i) => { %>
+      <details <% if (i === 0) { %>open<% } %>><summary><%= f.q %><svg class="icon"><use href="#i-plus"/></svg></summary><p><%= f.a %></p></details>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="h-stores">
+  <div class="container">
+    <div class="section-head">
+      <div><span class="eyebrow">Hệ thống cửa hàng</span><h2 id="h-stores">Ghé shop hoa Thanh Nhã gần bạn</h2></div>
+      <a class="link" href="/he-thong-cua-hang">Xem bản đồ <svg class="icon"><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="store-grid">
+      <% site.stores.forEach((s) => { %>
+      <div class="store-card reveal">
+        <h3><%= s.city %></h3>
+        <ul><% s.addresses.forEach((a) => { %><li><svg class="icon"><use href="#i-pin"/></svg><span><%= a %></span></li><% }) %></ul>
+      </div>
+      <% }) %>
+    </div>
+    <div class="cta-band reveal" style="margin-top:48px">
+      <div><h2>Cần hoa gấp trong hôm nay?</h2><p>Gọi hoặc nhắn Zalo, florist sẽ tư vấn mẫu có sẵn và giao trong 1–3 giờ.</p></div>
+      <div class="actions">
+        <a class="btn btn-primary" href="tel:<%= site.phone %>"><svg class="icon"><use href="#i-phone"/></svg><%= site.phoneDisplay %></a>
+        <a class="btn btn-light" href="<%= site.zalo %>" target="_blank" rel="noopener"><svg class="icon"><use href="#i-chat"/></svg>Nhắn Zalo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

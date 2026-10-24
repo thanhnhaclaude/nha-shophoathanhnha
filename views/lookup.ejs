@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+<section class="container" style="max-width:560px;padding:48px 20px 80px">
+  <h1 style="font-size:2.6rem">Tra cứu đơn hàng</h1>
+  <p class="muted">Nhập mã đơn (ví dụ TNABC123) và số điện thoại người gửi.</p>
+  <% if (error) { %><div class="alert alert-error" role="alert"><%= error %></div><% } %>
+  <form class="panel" method="post" style="display:grid;gap:16px">
+    <%- include('partials/field', { values, errors: {}, name: 'code', label: 'Mã đơn hàng', required: true }) %>
+    <%- include('partials/field', { values, errors: {}, name: 'phone', label: 'SĐT người gửi', type: 'tel', required: true, inputmode: 'tel' }) %>
+    <button class="btn btn-primary" type="submit">Tra cứu</button>
+  </form>
+</section>
+<%- include('partials/footer') %>

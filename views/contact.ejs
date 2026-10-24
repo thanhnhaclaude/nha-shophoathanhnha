@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+<section class="container page-hero"><span class="eyebrow">Liên hệ</span><h1>Florist luôn sẵn sàng tư vấn</h1><p>Gọi hoặc nhắn Zalo để đặt hoa nhanh nhất. Bạn cũng có thể để lại lời nhắn, shop sẽ gọi lại trong giờ làm việc.</p></section>
+<section class="container split" style="padding-bottom:70px;align-items:start">
+  <div class="panel">
+    <% if (sent) { %><div class="alert alert-success" role="status">Đã nhận lời nhắn. Shop sẽ liên hệ bạn sớm nhất!</div><% } %>
+    <form method="post" action="/lien-he" style="display:grid;gap:16px" novalidate>
+      <div class="honeypot" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <%- include('partials/field', { values, errors, name: 'name', label: 'Họ và tên', required: true, autocomplete: 'name' }) %>
+      <%- include('partials/field', { values, errors, name: 'phone', label: 'Số điện thoại', type: 'tel', required: true, autocomplete: 'tel', inputmode: 'tel' }) %>
+      <%- include('partials/field', { values, errors, name: 'message', label: 'Nội dung', type: 'textarea', required: true, maxlength: 2000, placeholder: 'Bạn cần hoa cho dịp nào, ngân sách bao nhiêu?' }) %>
+      <button class="btn btn-primary" type="submit">Gửi lời nhắn</button>
+    </form>
+  </div>
+  <div>
+    <ul class="perks">
+      <li><svg class="icon"><use href="#i-phone"/></svg><span><b>Hotline &amp; Zalo</b><br><a class="link" href="tel:<%= site.phone %>"><%= site.phoneDisplay %></a></span></li>
+      <li><svg class="icon"><use href="#i-chat"/></svg><span><b>Email</b><br><a class="link" href="mailto:<%= site.email %>"><%= site.email %></a></span></li>
+      <li><svg class="icon"><use href="#i-clock"/></svg><span><b>Giờ mở cửa</b><br><%= site.hours %>, tất cả các ngày</span></li>
+      <li><svg class="icon"><use href="#i-pin"/></svg><span><b>Cửa hàng chính</b><br><%= site.mainStore.street %>, <%= site.mainStore.district %>, <%= site.mainStore.city %><br><a class="link" href="/he-thong-cua-hang">Xem tất cả cửa hàng</a></span></li>
+    </ul>
+  </div>
+</section>
+<%- include('partials/footer') %>

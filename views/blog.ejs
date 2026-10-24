@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+<section class="container page-hero">
+  <span class="eyebrow">Cẩm nang hoa</span>
+  <h1>Hiểu hoa để tặng đúng ý</h1>
+  <p>Ý nghĩa các loài hoa, gợi ý chọn hoa theo dịp và mẹo chăm hoa từ florist của Thanh Nhã.</p>
+</section>
+<section class="container" style="padding-bottom:60px">
+  <div class="post-grid">
+    <% posts.forEach((post, i) => { %>
+    <article class="post-card">
+      <a href="/blog/<%= post.slug %>"><img src="<%= post.image %>" alt="<%= post.title %>" width="1200" height="750" loading="<%= i < 3 ? 'eager' : 'lazy' %>" decoding="async"></a>
+      <time datetime="<%= post.publishedAt %>"><%= formatDate(post.publishedAt) %></time>
+      <h2 style="font-size:1.45rem;margin:6px 0 8px"><a href="/blog/<%= post.slug %>"><%= post.title %></a></h2>
+      <p><%= post.excerpt %></p>
+    </article>
+    <% }) %>
+  </div>
+</section>
+<%- include('partials/footer') %>

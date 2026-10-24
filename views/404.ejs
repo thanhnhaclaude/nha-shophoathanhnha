@@ -1,0 +1,11 @@
+<%- include('partials/header') %>
+<section class="container" style="text-align:center;padding:90px 20px">
+  <span class="eyebrow"><%= typeof errorPage !== 'undefined' ? 'Lỗi 500' : 'Lỗi 404' %></span>
+  <h1><%= typeof errorPage !== 'undefined' ? 'Có lỗi xảy ra' : 'Không tìm thấy trang' %></h1>
+  <p class="muted">Trang bạn tìm có thể đã đổi địa chỉ. Hãy xem các mẫu hoa bên dưới hoặc gọi <a class="link" href="tel:<%= site.phone %>"><%= site.phoneDisplay %></a>.</p>
+  <div class="filter-pills" style="justify-content:center;margin:24px 0">
+    <% navCategories.forEach((c) => { %><a class="pill" href="/danh-muc/<%= c.slug %>"><%= c.name %></a><% }) %>
+  </div>
+  <a class="btn btn-primary" href="/">Về trang chủ</a>
+</section>
+<%- include('partials/footer') %>

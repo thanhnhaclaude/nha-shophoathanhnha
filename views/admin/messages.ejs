@@ -1,0 +1,19 @@
+<%- include('_top') %>
+<h1>Tin nhắn liên hệ</h1>
+<div class="table-wrap">
+  <table class="t">
+    <thead><tr><th>Ngày</th><th>Khách</th><th>Nội dung</th><th></th></tr></thead>
+    <tbody>
+      <% if (!list.length) { %><tr><td colspan="4" class="muted">Chưa có tin nhắn.</td></tr><% } %>
+      <% list.forEach((m) => { %>
+      <tr style="<%= m.read ? 'opacity:.6' : '' %>">
+        <td><%= formatDate(m.createdAt) %></td>
+        <td><b><%= m.name %></b><br><a href="tel:<%= m.phone %>"><%= m.phone %></a></td>
+        <td style="white-space:pre-line;max-width:520px"><%= m.message %></td>
+        <td><% if (!m.read) { %><form method="post" action="/admin/lien-he/<%= m.id %>/da-doc"><input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn-light btn-sm" style="border:1px solid var(--line)" type="submit">Đã xử lý</button></form><% } %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_bottom') %>

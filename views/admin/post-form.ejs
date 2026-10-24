@@ -1,0 +1,27 @@
+<%- include('_top') %>
+<div class="admin-top"><h1><%= post.id ? 'Sửa bài viết' : 'Viết bài mới' %></h1><a class="link" href="/admin/bai-viet">← Danh sách</a></div>
+<% if (typeof saved !== 'undefined' && saved) { %><div class="alert alert-success">Đã lưu. <a class="link" href="/blog/<%= post.slug %>" target="_blank" rel="noopener">Xem bài ↗</a></div><% } %>
+<% if (error) { %><div class="alert alert-error" role="alert"><%= error %></div><% } %>
+<form class="form-card" method="post" action="/admin/bai-viet<%= post.id ? '/' + post.id : '' %>" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="form-grid">
+    <div class="field full"><label for="title">Tiêu đề (chứa từ khóa chính) *</label><input class="input" id="title" name="title" value="<%= post.title || '' %>" required></div>
+    <div class="field"><label for="slug">Đường dẫn</label><input class="input" id="slug" name="slug" value="<%= post.slug || '' %>"></div>
+    <div class="field"><label for="publishedAt">Ngày đăng</label><input class="input" id="publishedAt" type="date" name="publishedAt" value="<%= (post.publishedAt || '').slice(0, 10) %>"></div>
+    <div class="field full"><label for="excerpt">Tóm tắt (meta description, 140–160 ký tự)</label><textarea class="textarea" id="excerpt" name="excerpt" maxlength="200"><%= post.excerpt || '' %></textarea></div>
+    <div class="field full"><label for="tags">Chủ đề (cách nhau dấu phẩy)</label><input class="input" id="tags" name="tags" value="<%= (post.tags || []).join(', ') %>"></div>
+    <div class="field full"><label for="content">Nội dung (Markdown). Nên chèn link nội bộ tới danh mục/sản phẩm liên quan.</label><textarea class="textarea" id="content" name="content" style="min-height:360px"><%= post.content || '' %></textarea></div>
+    <div class="field full">
+      <% if (post.image) { %><img src="<%= post.image %>" alt="" width="240" height="150" style="border-radius:10px;margin-bottom:8px;width:240px;height:150px;object-fit:cover"><% } %>
+      <label for="image">Ảnh đại diện<%= post.image ? ' (chọn để thay)' : ' *' %></label><input class="input" id="image" type="file" name="image" accept="image/jpeg,image/png,image/webp,image/avif">
+    </div>
+    <label class="check full"><input type="checkbox" name="published" <%= post.published !== false ? 'checked' : '' %>> Đăng công khai</label>
+  </div>
+  <div><button class="btn btn-primary" type="submit">Lưu bài viết</button></div>
+</form>
+<% if (post.id) { %>
+<form method="post" action="/admin/bai-viet/<%= post.id %>/xoa" data-confirm="Xóa vĩnh viễn bài viết này?" style="margin-top:16px">
+  <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn-danger btn-sm" type="submit">Xóa bài viết</button>
+</form>
+<% } %>
+<%- include('_bottom') %>

@@ -1,0 +1,72 @@
+<%- include('partials/header') %>
+<% const f = (o) => include('partials/field', { values, errors, ...o }); %>
+<section class="container page-hero" style="padding-bottom:0"><h1>Đặt hàng</h1><p class="muted">Chỉ mất khoảng 2 phút. Shop sẽ gọi hoặc nhắn Zalo xác nhận ngay sau khi nhận đơn.</p></section>
+<form class="container checkout-layout" method="post" action="/thanh-toan" data-checkout-form novalidate>
+  <div>
+    <% if (Object.keys(errors).length) { %>
+    <div class="alert alert-error" role="alert" tabindex="-1" data-focus-me>
+      <strong>Vui lòng kiểm tra lại <%= Object.keys(errors).length %> thông tin:</strong>
+      <ul style="margin:6px 0 0;padding-left:18px"><% Object.entries(errors).forEach(([k, e]) => { %><li><a href="#f-<%= k %>"><%= e %></a></li><% }) %></ul>
+    </div>
+    <% } %>
+    <input type="hidden" name="cart" data-cart-input>
+    <div class="honeypot" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
+
+    <div class="panel">
+      <h2><span class="num">1</span>Người gửi</h2>
+      <div class="form-grid">
+        <%- f({ name: 'senderName', label: 'Họ và tên', required: true, autocomplete: 'name' }) %>
+        <%- f({ name: 'senderPhone', label: 'Số điện thoại', type: 'tel', required: true, autocomplete: 'tel', inputmode: 'tel', hint: 'Shop gọi số này để xác nhận đơn' }) %>
+        <%- f({ name: 'senderEmail', label: 'Email (không bắt buộc)', type: 'email', autocomplete: 'email', full: true }) %>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2><span class="num">2</span>Người nhận &amp; giao hàng</h2>
+      <div class="form-grid">
+        <%- f({ name: 'recipientName', label: 'Họ tên người nhận', required: true }) %>
+        <%- f({ name: 'recipientPhone', label: 'SĐT người nhận', type: 'tel', required: true, inputmode: 'tel' }) %>
+        <%- f({ name: 'address', label: 'Địa chỉ giao hoa', required: true, full: true, autocomplete: 'street-address', placeholder: 'Số nhà, tên đường, phường/xã, tòa nhà…' }) %>
+        <%- f({ name: 'district', label: 'Quận/Huyện' }) %>
+        <%- f({ name: 'city', label: 'Tỉnh/Thành phố', required: true, placeholder: 'TP. Hồ Chí Minh' }) %>
+        <%- f({ name: 'deliveryDate', label: 'Ngày giao', type: 'date', required: true, min: today }) %>
+        <div class="field">
+          <label for="f-deliverySlot">Khung giờ giao</label>
+          <select class="input" id="f-deliverySlot" name="deliverySlot">
+            <option value="">Càng sớm càng tốt</option>
+            <% site.deliverySlots.forEach((s) => { %><option <%= values.deliverySlot === s ? 'selected' : '' %>><%= s %></option><% }) %>
+          </select>
+        </div>
+        <div class="field full"><label class="check"><input type="checkbox" name="surprise" <%= values.surprise ? 'checked' : '' %>> Tặng bất ngờ: không gọi trước cho người nhận, liên hệ tôi khi cần.</label></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2><span class="num">3</span>Lời nhắn &amp; ghi chú</h2>
+      <div class="form-grid">
+        <%- f({ name: 'cardMessage', label: 'Lời nhắn trên thiệp (viết tay miễn phí)', type: 'textarea', full: true, maxlength: 300, placeholder: 'Chúc mẹ sinh nhật thật vui và luôn mạnh khỏe…' }) %>
+        <%- f({ name: 'note', label: 'Ghi chú cho shop', type: 'textarea', full: true, maxlength: 500, placeholder: 'Đổi tông màu, thông tin băng rôn, xuất hóa đơn VAT…' }) %>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2><span class="num">4</span>Thanh toán</h2>
+      <div class="pay-options">
+        <label class="pay-option"><input type="radio" name="paymentMethod" value="bank" <%= values.paymentMethod !== 'cod' ? 'checked' : '' %>><span><b>Chuyển khoản VietQR</b><small>Mã QR có sẵn số tiền hiện ngay sau khi đặt. Phù hợp khi tặng bất ngờ.</small></span></label>
+        <label class="pay-option"><input type="radio" name="paymentMethod" value="cod" <%= values.paymentMethod === 'cod' ? 'checked' : '' %>><span><b>Thanh toán khi nhận hoa (COD)</b><small>Người nhận trả tiền mặt cho shipper, chỉ áp dụng nội thành.</small></span></label>
+      </div>
+    </div>
+  </div>
+
+  <aside class="panel summary" aria-label="Đơn hàng của bạn" data-cart-page data-free-ship="<%= site.freeShipFrom %>">
+    <h2>Đơn hàng</h2>
+    <% if (errors.cart) { %><div class="alert alert-error"><%= errors.cart %></div><% } %>
+    <div data-mini-lines><p class="muted">Đang tải…</p></div>
+    <div class="summary-row" style="margin-top:8px"><span>Tạm tính</span><span data-subtotal>0đ</span></div>
+    <div class="summary-row"><span>Phí giao nội thành</span><span data-shipping>0đ</span></div>
+    <div class="summary-row total"><span>Tổng cộng</span><span data-total>0đ</span></div>
+    <button class="btn btn-primary btn-block" type="submit" style="margin-top:16px" data-submit>Xác nhận đặt hoa</button>
+    <p class="hint" style="text-align:center">Bằng việc đặt hàng, bạn đồng ý với <a class="link" href="/chinh-sach/doi-tra">chính sách đổi trả</a> và <a class="link" href="/chinh-sach/bao-mat">bảo mật</a>.</p>
+  </aside>
+</form>
+<%- include('partials/footer') %>

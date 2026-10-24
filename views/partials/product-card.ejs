@@ -1,0 +1,20 @@
+<% const off = discountPct(p); %>
+<article class="product-card reveal">
+  <a class="product-media" href="/san-pham/<%= p.slug %>">
+    <div class="badge">
+      <% if (off) { %><span class="sale">-<%= off %>%</span><% } %>
+      <% if (p.bestseller) { %><span>Bán chạy</span><% } %>
+    </div>
+    <img src="<%= p.images[0] %>" alt="<%= p.name %>" width="450" height="563" loading="<%= typeof eager !== 'undefined' && eager ? 'eager' : 'lazy' %>" decoding="async">
+  </a>
+  <button class="btn btn-light btn-sm quick-add" type="button" data-add-to-cart="<%= p.id %>" data-name="<%= p.name %>">
+    <svg class="icon"><use href="#i-bag"/></svg>Thêm vào giỏ
+  </button>
+  <div class="product-info">
+    <h3><a href="/san-pham/<%= p.slug %>"><%= p.name %></a></h3>
+    <div class="price">
+      <strong><%= formatVND(finalPrice(p)) %></strong>
+      <% if (off) { %><del><%= formatVND(p.price) %></del><% } %>
+    </div>
+  </div>
+</article>

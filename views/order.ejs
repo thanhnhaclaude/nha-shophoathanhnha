@@ -1,0 +1,55 @@
+<%- include('partials/header') %>
+<section class="container" style="max-width:920px;padding-bottom:60px">
+  <div class="order-head">
+    <% if (isNew) { %>
+    <div class="ok"><svg class="icon"><use href="#i-check"/></svg></div>
+    <h1 style="font-size:2.6rem">Cảm ơn bạn đã đặt hoa!</h1>
+    <p class="muted">Mã đơn của bạn là <strong style="color:var(--ink)"><%= order.code %></strong>. Shop sẽ liên hệ số <%= order.sender.phone %> để xác nhận trong ít phút.</p>
+    <% } else { %>
+    <h1 style="font-size:2.6rem">Đơn hàng <%= order.code %></h1>
+    <% } %>
+    <p><span class="status-pill <%= order.status %>"><%= STATUS[order.status] %></span> &nbsp; <span class="status-pill <%= order.paymentStatus %>"><%= PAYMENT_STATUS[order.paymentStatus] %></span></p>
+  </div>
+
+  <% if (order.paymentMethod === 'bank' && order.paymentStatus === 'unpaid') { %>
+  <div class="panel qr-box">
+    <h2 style="justify-content:center">Chuyển khoản <%= formatVND(order.total) %></h2>
+    <% if (qr) { %>
+    <img src="<%= qr %>" alt="Mã VietQR thanh toán <%= formatVND(order.total) %> cho đơn <%= order.code %>" width="280" height="320">
+    <dl class="kv" style="max-width:420px;margin:0 auto;text-align:left">
+      <dt>Ngân hàng</dt><dd><%= bank.bankName %></dd>
+      <dt>Số tài khoản</dt><dd><%= bank.account %></dd>
+      <dt>Chủ tài khoản</dt><dd><%= bank.name %></dd>
+      <dt>Nội dung</dt><dd><strong><%= order.code %></strong></dd>
+    </dl>
+    <% } else { %>
+    <p class="muted">Shop sẽ gửi thông tin chuyển khoản qua Zalo/tin nhắn khi xác nhận đơn. Nội dung chuyển khoản: <strong><%= order.code %></strong>.</p>
+    <% } %>
+  </div>
+  <% } %>
+
+  <div class="panel">
+    <h2>Sản phẩm</h2>
+    <% order.items.forEach((i) => { %>
+    <div class="mini-line"><img src="<%= i.image %>" alt="" width="56" height="70"><div><a href="/san-pham/<%= i.slug %>"><strong><%= i.name %></strong></a><small><%= i.variant %> · SL <%= i.qty %></small></div><strong><%= formatVND(i.price * i.qty) %></strong></div>
+    <% }) %>
+    <div class="summary-row" style="margin-top:8px"><span>Tạm tính</span><span><%= formatVND(order.subtotal) %></span></div>
+    <div class="summary-row"><span>Phí giao</span><span><%= order.shipping ? formatVND(order.shipping) : 'Miễn phí' %></span></div>
+    <div class="summary-row total"><span>Tổng cộng</span><span><%= formatVND(order.total) %></span></div>
+  </div>
+
+  <div class="panel">
+    <h2>Thông tin giao hàng</h2>
+    <dl class="kv">
+      <dt>Người nhận</dt><dd><%= order.recipient.name %> · <%= order.recipient.phone %></dd>
+      <dt>Địa chỉ</dt><dd><%= [order.recipient.address, order.recipient.district, order.recipient.city].filter(Boolean).join(', ') %></dd>
+      <dt>Thời gian</dt><dd><%= order.delivery.date.split('-').reverse().join('/') %> · <%= order.delivery.slot %></dd>
+      <% if (order.cardMessage) { %><dt>Lời nhắn thiệp</dt><dd><%= order.cardMessage %></dd><% } %>
+      <dt>Thanh toán</dt><dd><%= order.paymentMethod === 'bank' ? 'Chuyển khoản VietQR' : 'Khi nhận hoa (COD)' %></dd>
+    </dl>
+  </div>
+  <p class="muted" style="text-align:center;margin-top:24px">Cần thay đổi đơn? Gọi <a class="link" href="tel:<%= site.phone %>"><%= site.phoneDisplay %></a> và đọc mã <strong><%= order.code %></strong>. Hãy lưu lại trang này để theo dõi trạng thái.</p>
+</section>
+<% if (isNew) { %><script>try{localStorage.removeItem('tn_cart')}catch(e){}
+window.addEventListener('load',function(){if(typeof gtag==='function')gtag('event','purchase',<%- JSON.stringify({ transaction_id: order.code, currency: 'VND', value: order.total, shipping: order.shipping, items: order.items.map((i) => ({ item_id: i.productId, item_name: i.name, item_variant: i.variant, price: i.price, quantity: i.qty })) }).replace(/</g, '\\u003c') %>)});</script><% } %>
+<%- include('partials/footer') %>

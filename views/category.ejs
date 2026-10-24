@@ -1,0 +1,45 @@
+<%- include('partials/header') %>
+<section class="page-hero container">
+  <span class="eyebrow"><%= items.length %> mẫu hoa</span>
+  <h1><%= cat.title %></h1>
+  <p><%= cat.intro %></p>
+</section>
+<section class="container" style="padding-bottom:40px">
+  <div class="toolbar">
+    <div class="filter-pills" role="group" aria-label="Lọc theo giá">
+      <a class="pill <%= !price ? 'active' : '' %>" href="?sort=<%= sort %>">Tất cả giá</a>
+      <a class="pill <%= price === 'duoi-500k' ? 'active' : '' %>" href="?gia=duoi-500k&sort=<%= sort %>" rel="nofollow">Dưới 500k</a>
+      <a class="pill <%= price === '500k-1tr' ? 'active' : '' %>" href="?gia=500k-1tr&sort=<%= sort %>" rel="nofollow">500k – 1 triệu</a>
+      <a class="pill <%= price === '1tr-2tr' ? 'active' : '' %>" href="?gia=1tr-2tr&sort=<%= sort %>" rel="nofollow">1 – 2 triệu</a>
+      <a class="pill <%= price === 'tren-2tr' ? 'active' : '' %>" href="?gia=tren-2tr&sort=<%= sort %>" rel="nofollow">Trên 2 triệu</a>
+    </div>
+    <form class="sort-form" method="get">
+      <% if (price) { %><input type="hidden" name="gia" value="<%= price %>"><% } %>
+      <label for="sort">Sắp xếp</label>
+      <select class="select" id="sort" name="sort" data-autosubmit>
+        <option value="noi-bat" <%= sort === 'noi-bat' ? 'selected' : '' %>>Nổi bật</option>
+        <option value="gia-tang" <%= sort === 'gia-tang' ? 'selected' : '' %>>Giá thấp đến cao</option>
+        <option value="gia-giam" <%= sort === 'gia-giam' ? 'selected' : '' %>>Giá cao đến thấp</option>
+        <option value="moi" <%= sort === 'moi' ? 'selected' : '' %>>Mới nhất</option>
+      </select>
+      <noscript><button class="btn btn-sm btn-dark" type="submit">Áp dụng</button></noscript>
+    </form>
+  </div>
+  <% if (items.length) { %>
+  <div class="product-grid">
+    <% items.forEach((p, i) => { %><%- include('partials/product-card', { p, eager: i < 4 }) %><% }) %>
+  </div>
+  <% } else { %>
+  <div class="empty"><p>Chưa có mẫu trong khoảng giá này.</p><a class="btn btn-dark" href="?">Xem tất cả</a></div>
+  <% } %>
+  <div class="seo-content">
+    <div class="prose"><%- contentHtml %></div>
+    <% if (cat.faq && cat.faq.length) { %>
+    <h2 style="margin-top:40px">Hỏi đáp về <%= cat.name.toLowerCase() %></h2>
+    <div class="faq-list" style="margin:0;max-width:780px">
+      <% cat.faq.forEach((f) => { %><details><summary><%= f.q %><svg class="icon"><use href="#i-plus"/></svg></summary><p><%= f.a %></p></details><% }) %>
+    </div>
+    <% } %>
+  </div>
+</section>
+<%- include('partials/footer') %>

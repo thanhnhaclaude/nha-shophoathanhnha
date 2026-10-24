@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+<section class="container page-hero">
+  <span class="eyebrow">Giới thiệu</span>
+  <h1><%= site.name %>: thay lời yêu thương</h1>
+  <p>Chúng tôi tin rằng một bó hoa đúng lúc có thể nói thay những điều khó nói. Vì vậy mỗi đơn hàng ở Thanh Nhã đều được chăm chút như món quà của chính mình.</p>
+</section>
+<section class="container split" style="padding-bottom:70px">
+  <div class="split-media"><img src="/images/site/hoa-tuoi-moi-ngay.webp" alt="Hoa tươi nhập mới mỗi sáng tại cửa hàng Thanh Nhã" width="1400" height="1000"></div>
+  <div class="prose">
+    <h2 style="margin-top:0">Hoa tươi, cắm bằng tay, giao bằng tâm</h2>
+    <p>Mỗi sáng, florist của Thanh Nhã chọn hoa từ nhà vườn Đà Lạt và nguồn nhập khẩu, xử lý gốc, dưỡng lạnh rồi mới bắt đầu cắm. Mỗi bó hoa đều được chụp ảnh gửi khách duyệt trước khi giao.</p>
+    <p>Hệ thống <%= site.stores.reduce((n, s) => n + s.addresses.length, 0) %> cửa hàng giúp shop giao nhanh trong nội thành TP. Hồ Chí Minh, Hà Nội, Đà Nẵng và nhiều tỉnh thành khác.</p>
+    <h3>Cam kết của chúng tôi</h3>
+    <ul>
+      <li>Hoa tươi trong ngày, đúng tông màu và kiểu dáng đã chọn.</li>
+      <li>Đổi bó mới hoặc hoàn tiền 100% nếu hoa không đạt chất lượng.</li>
+      <li>Bảo mật thông tin người gửi và người nhận.</li>
+      <li>Hỗ trợ từ <%= site.hours %> mỗi ngày, kể cả lễ Tết.</li>
+    </ul>
+    <a class="btn btn-primary" href="/he-thong-cua-hang" style="text-decoration:none;color:#fff">Xem hệ thống cửa hàng</a>
+  </div>
+</section>
+<%- include('partials/footer') %>

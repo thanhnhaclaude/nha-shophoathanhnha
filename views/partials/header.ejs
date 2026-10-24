@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>document.documentElement.classList.add('js')</script>
+  <title><%= meta.title %></title>
+  <meta name="description" content="<%= meta.description %>">
+  <meta name="robots" content="<%= meta.robots %>">
+  <link rel="canonical" href="<%= meta.canonical %>">
+  <meta property="og:type" content="<%= meta.type === 'product' ? 'product' : meta.type %>">
+  <meta property="og:site_name" content="<%= site.name %>">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:title" content="<%= meta.title %>">
+  <meta property="og:description" content="<%= meta.description %>">
+  <meta property="og:url" content="<%= meta.canonical %>">
+  <meta property="og:image" content="<%= meta.image %>">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#9f1d3a">
+  <% if (settings.gscVerification) { %><meta name="google-site-verification" content="<%= settings.gscVerification %>"><% } %>
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;0,700;1,500&family=Montserrat:wght@400;500;600;700&display=swap&subset=vietnamese">
+  <link rel="stylesheet" href="/css/style.css?v=<%= v %>">
+  <% if (typeof preload !== 'undefined' && preload) { %><link rel="preload" as="image" href="<%= preload %>" fetchpriority="high"><% } %>
+  <% for (const block of jsonld) { %><script type="application/ld+json"><%- JSON.stringify(block).replace(/</g, '\\u003c') %></script>
+  <% } %>
+  <% if (settings.gaId) { %>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= settings.gaId %>"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','<%= settings.gaId %>');</script>
+  <% } %>
+</head>
+<body class="<%= typeof bodyClass !== 'undefined' ? bodyClass : '' %>">
+<%- include('icons') %>
+<a class="skip-link" href="#main">Bỏ qua, đến nội dung chính</a>
+<% if (settings.announcement) { %><div class="announce"><%= settings.announcement %> · <a href="tel:<%= site.phone %>"><%= site.phoneDisplay %></a></div><% } %>
+<header class="site-header">
+  <div class="container header-row">
+    <button class="icon-btn menu-toggle" type="button" aria-label="Mở menu" aria-controls="drawer" aria-expanded="false" data-drawer-open>
+      <svg class="icon"><use href="#i-menu"/></svg>
+    </button>
+    <a class="logo" href="/" aria-label="<%= site.name %> – Trang chủ">
+      <img src="/images/logo.svg" alt="" width="44" height="44">
+      <span class="logo-text"><strong>Thanh Nhã</strong><span>Shop hoa tươi</span></span>
+    </a>
+    <form class="search" action="/tim-kiem" role="search">
+      <label class="sr-only" for="q">Tìm hoa</label>
+      <input id="q" name="q" type="search" placeholder="Tìm hoa hồng, hoa sinh nhật, lan…" autocomplete="off">
+      <button type="submit" aria-label="Tìm kiếm"><svg class="icon"><use href="#i-search"/></svg></button>
+    </form>
+    <div class="header-actions">
+      <a class="hotline" href="tel:<%= site.phone %>">
+        <span class="hotline-ico"><svg class="icon"><use href="#i-phone"/></svg></span>
+        <span><small>Đặt hoa nhanh</small><strong><%= site.phoneDisplay %></strong></span>
+      </a>
+      <a class="icon-btn" href="/gio-hang" aria-label="Giỏ hàng">
+        <svg class="icon"><use href="#i-bag"/></svg>
+        <span class="cart-count" data-cart-count data-count="0">0</span>
+      </a>
+    </div>
+  </div>
+  <nav class="main-nav" aria-label="Danh mục chính">
+    <ul class="container">
+      <% for (const c of navCategories) { %>
+      <li><a href="/danh-muc/<%= c.slug %>" <% if (path === '/danh-muc/' + c.slug) { %>aria-current="page"<% } %>><%= c.name %></a></li>
+      <% } %>
+      <li><a href="/blog" <% if (path.startsWith('/blog')) { %>aria-current="page"<% } %>>Cẩm nang</a></li>
+    </ul>
+  </nav>
+</header>
+<div class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-backdrop" data-drawer-close></div>
+  <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="drawer-head">
+      <a class="logo" href="/"><img src="/images/logo.svg" alt="" width="40" height="40"><span class="logo-text"><strong>Thanh Nhã</strong></span></a>
+      <button class="icon-btn" type="button" aria-label="Đóng menu" data-drawer-close><svg class="icon"><use href="#i-x"/></svg></button>
+    </div>
+    <form class="search" action="/tim-kiem" role="search" style="display:block;max-width:none;margin-bottom:8px">
+      <label class="sr-only" for="q2">Tìm hoa</label>
+      <input id="q2" name="q" type="search" placeholder="Tìm hoa…">
+      <button type="submit" aria-label="Tìm kiếm"><svg class="icon"><use href="#i-search"/></svg></button>
+    </form>
+    <nav aria-label="Menu di động">
+      <% for (const c of navCategories) { %><a href="/danh-muc/<%= c.slug %>"><%= c.name %><svg class="icon"><use href="#i-arrow"/></svg></a><% } %>
+      <a href="/blog">Cẩm nang hoa<svg class="icon"><use href="#i-arrow"/></svg></a>
+      <a href="/tra-cuu-don-hang">Tra cứu đơn hàng<svg class="icon"><use href="#i-arrow"/></svg></a>
+      <a href="/lien-he">Liên hệ<svg class="icon"><use href="#i-arrow"/></svg></a>
+    </nav>
+    <a class="btn btn-primary btn-block" href="tel:<%= site.phone %>"><svg class="icon"><use href="#i-phone"/></svg>Gọi <%= site.phoneDisplay %></a>
+  </div>
+</div>
+<% if (breadcrumbs) { %>
+<nav class="breadcrumbs container" aria-label="Breadcrumb">
+  <ol>
+    <% breadcrumbs.forEach((b, i) => { %>
+    <li><% if (i < breadcrumbs.length - 1) { %><a href="<%= b.path %>"><%= b.name %></a><% } else { %><span aria-current="page"><%= b.name %></span><% } %></li>
+    <% }) %>
+  </ol>
+</nav>
+<% } %>
+<main id="main">

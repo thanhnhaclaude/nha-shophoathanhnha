@@ -1,0 +1,92 @@
+<%- include('partials/header', { preload: p.images[0], bodyClass: 'has-mobile-buy' }) %>
+<% const off = discountPct(p); const base = finalPrice(p); %>
+<section class="container pdp">
+  <div>
+    <div class="gallery-main">
+      <img src="<%= p.images[0] %>" alt="<%= p.name %>" width="900" height="1125" fetchpriority="high" data-gallery-main>
+    </div>
+    <% if (p.images.length > 1) { %>
+    <div class="filter-pills" style="margin-top:12px">
+      <% p.images.forEach((img, i) => { %>
+      <button type="button" class="pill" data-gallery-thumb="<%= img %>" aria-label="Xem ảnh <%= i + 1 %>" style="padding:4px;border-radius:12px;height:auto"><img src="<%= img %>" alt="" width="64" height="80" style="width:64px;height:80px;object-fit:cover;border-radius:8px" loading="lazy"></button>
+      <% }) %>
+    </div>
+    <% } %>
+  </div>
+  <div>
+    <% if (cat) { %><a class="eyebrow" href="/danh-muc/<%= cat.slug %>"><%= cat.name %></a><% } %>
+    <h1><%= p.name %></h1>
+    <div class="sku">Mã: <%= p.sku %></div>
+    <div class="price" style="margin-top:14px">
+      <strong data-price><%= formatVND(base) %></strong>
+      <% if (off) { %><del><%= formatVND(p.price) %></del><span class="save-tag">Tiết kiệm <%= off %>%</span><% } %>
+    </div>
+    <p class="pdp-short"><%= p.short %></p>
+
+    <form data-buy-form data-id="<%= p.id %>" data-name="<%= p.name %>">
+      <fieldset class="variants">
+        <legend class="option-label">Chọn phiên bản</legend>
+        <% variants.forEach((v, i) => { %>
+        <label class="variant">
+          <input type="radio" name="variant" value="<%= v.name %>" data-price-value="<%= base + (v.add || 0) %>" <%= i === 0 ? 'checked' : '' %>>
+          <span><b><%= v.name %></b><small><%= formatVND(base + (v.add || 0)) %><%= v.note ? ' · ' + v.note : '' %></small></span>
+        </label>
+        <% }) %>
+      </fieldset>
+      <% if (p.inStock === false) { %>
+      <div class="alert alert-error">Mẫu này tạm hết hoa. Gọi <a href="tel:<%= site.phone %>"><%= site.phoneDisplay %></a> để được gợi ý mẫu tương tự.</div>
+      <% } else { %>
+      <span class="option-label">Số lượng</span>
+      <div class="buy-row">
+        <div class="qty">
+          <button type="button" data-qty="-1" aria-label="Giảm"><svg class="icon"><use href="#i-minus"/></svg></button>
+          <input type="number" name="qty" value="1" min="1" max="50" aria-label="Số lượng" inputmode="numeric">
+          <button type="button" data-qty="1" aria-label="Tăng"><svg class="icon"><use href="#i-plus"/></svg></button>
+        </div>
+        <button class="btn btn-ghost" type="submit" name="action" value="add"><svg class="icon"><use href="#i-bag"/></svg>Thêm vào giỏ</button>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit" name="action" value="buy" style="margin-bottom:12px">Đặt hoa ngay</button>
+      <% } %>
+    </form>
+    <div class="contact-row">
+      <a class="btn btn-light btn-sm" style="border:1px solid var(--line)" href="tel:<%= site.phone %>"><svg class="icon"><use href="#i-phone"/></svg>Gọi đặt nhanh</a>
+      <a class="btn btn-light btn-sm" style="border:1px solid var(--line)" href="<%= site.zalo %>" target="_blank" rel="noopener"><svg class="icon"><use href="#i-chat"/></svg>Tư vấn qua Zalo</a>
+    </div>
+    <ul class="perks">
+      <li><svg class="icon"><use href="#i-truck"/></svg><span><b>Giao nhanh 1–3 giờ</b> nội thành, miễn phí cho đơn từ <%= formatVND(site.freeShipFrom) %>.</span></li>
+      <li><svg class="icon"><use href="#i-camera"/></svg><span><b>Gửi ảnh thật</b> bó hoa trước khi giao.</span></li>
+      <li><svg class="icon"><use href="#i-gift"/></svg><span><b>Tặng thiệp viết tay</b> theo lời nhắn của bạn.</span></li>
+      <li><svg class="icon"><use href="#i-shield"/></svg><span><b>Đổi mới hoặc hoàn tiền</b> nếu hoa không đạt chất lượng.</span></li>
+    </ul>
+    <dl class="spec">
+      <dt>Thành phần hoa</dt><dd><%= p.flowers %></dd>
+      <dt>Lưu ý</dt><dd>Ảnh minh họa. Một số loài hoa theo mùa có thể được thay bằng loài tương đương, giữ đúng tông màu và giá trị; shop luôn báo trước.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="container tabs-section">
+  <div class="panel">
+    <h2>Mô tả sản phẩm</h2>
+    <div class="prose"><%- descriptionHtml %></div>
+  </div>
+</section>
+
+<% if (related.length) { %>
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-head"><div><span class="eyebrow">Có thể bạn thích</span><h2>Mẫu hoa tương tự</h2></div></div>
+    <div class="product-grid">
+      <% related.forEach((r) => { %><%- include('partials/product-card', { p: r }) %><% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<% if (p.inStock !== false) { %>
+<div class="mobile-buy">
+  <a class="btn btn-ghost" href="tel:<%= site.phone %>" aria-label="Gọi đặt hoa"><svg class="icon"><use href="#i-phone"/></svg></a>
+  <button class="btn btn-primary" type="button" data-mobile-buy>Đặt hoa · <span data-price><%= formatVND(base) %></span></button>
+</div>
+<% } %>
+<%- include('partials/footer') %>

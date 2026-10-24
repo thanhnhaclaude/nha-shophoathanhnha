@@ -1,0 +1,19 @@
+<%- include('_top') %>
+<div class="admin-top"><h1>Sản phẩm</h1><a class="btn btn-primary btn-sm" href="/admin/san-pham/moi">+ Thêm sản phẩm</a></div>
+<div class="table-wrap">
+  <table class="t">
+    <thead><tr><th></th><th>Tên</th><th>Giá</th><th>Danh mục</th><th>Trạng thái</th></tr></thead>
+    <tbody>
+      <% list.forEach((p) => { %>
+      <tr>
+        <td><img src="<%= p.images[0] %>" alt="" width="48" height="60"></td>
+        <td><a href="/admin/san-pham/<%= p.id %>"><%= p.name %></a><br><small class="muted"><%= p.sku %></small></td>
+        <td><%= formatVND(finalPrice(p)) %><% if (discountPct(p)) { %><br><del class="muted"><%= formatVND(p.price) %></del><% } %></td>
+        <td><small><%= p.categories.map((s) => (categories.find((c) => c.slug === s) || { name: s }).name).join(', ') %></small></td>
+        <td><span class="status-pill <%= p.active === false ? 'cancelled' : 'done' %>"><%= p.active === false ? 'Ẩn' : 'Đang bán' %></span><% if (p.inStock === false) { %> <span class="status-pill">Hết hàng</span><% } %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_bottom') %>

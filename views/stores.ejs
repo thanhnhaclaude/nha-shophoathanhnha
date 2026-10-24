@@ -1,0 +1,24 @@
+<%- include('partials/header') %>
+<section class="container page-hero">
+  <span class="eyebrow">Hệ thống cửa hàng</span>
+  <h1>Cửa hàng hoa Thanh Nhã gần bạn</h1>
+  <p>Ghé trực tiếp để chọn hoa hoặc đặt online, shop giao từ cửa hàng gần người nhận nhất. Mở cửa <%= site.hours %> mỗi ngày.</p>
+</section>
+<section class="container" style="padding-bottom:60px">
+  <div class="store-grid">
+    <% site.stores.forEach((s) => { %>
+    <div class="store-card">
+      <h2 style="font-size:1.6rem"><%= s.city %></h2>
+      <ul>
+        <% s.addresses.forEach((a) => { const full = s.city === 'Các tỉnh' ? a.replace(':', ',') : a + ', ' + s.city; %>
+        <li><svg class="icon"><use href="#i-pin"/></svg><span><%= a %><br><a class="link" style="font-size:.82rem" href="https://www.google.com/maps/search/?api=1&query=<%= encodeURIComponent('Hoa Thanh Nhã ' + full) %>" target="_blank" rel="noopener">Chỉ đường</a></span></li>
+        <% }) %>
+      </ul>
+    </div>
+    <% }) %>
+  </div>
+  <div class="panel" style="margin-top:32px;padding:0;overflow:hidden">
+    <iframe title="Bản đồ cửa hàng <%= site.mainStore.street %>" src="https://www.google.com/maps?q=<%= encodeURIComponent(site.mainStore.street + ', ' + site.mainStore.district + ', ' + site.mainStore.city) %>&output=embed" width="100%" height="380" style="border:0;display:block" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+</section>
+<%- include('partials/footer') %>

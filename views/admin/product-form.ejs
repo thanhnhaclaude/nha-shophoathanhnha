@@ -1,0 +1,38 @@
+<%- include('_top') %>
+<div class="admin-top"><h1><%= p.id ? 'Sửa sản phẩm' : 'Thêm sản phẩm' %></h1><a class="link" href="/admin/san-pham">← Danh sách</a></div>
+<% if (typeof saved !== 'undefined' && saved) { %><div class="alert alert-success">Đã lưu. <a class="link" href="/san-pham/<%= p.slug %>" target="_blank" rel="noopener">Xem trên website ↗</a></div><% } %>
+<% if (error) { %><div class="alert alert-error" role="alert"><%= error %></div><% } %>
+<form class="form-card" method="post" action="/admin/san-pham<%= p.id ? '/' + p.id : '' %>" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf" value="<%= csrf %>">
+  <div class="form-grid">
+    <div class="field full"><label for="name">Tên sản phẩm *</label><input class="input" id="name" name="name" value="<%= p.name || '' %>" required></div>
+    <div class="field"><label for="slug">Đường dẫn (để trống = tự tạo)</label><input class="input" id="slug" name="slug" value="<%= p.slug || '' %>"></div>
+    <div class="field"><label for="sku">Mã SKU</label><input class="input" id="sku" name="sku" value="<%= p.sku || '' %>"></div>
+    <div class="field"><label for="price">Giá gốc (đ) *</label><input class="input" id="price" name="price" inputmode="numeric" value="<%= p.price || '' %>" required></div>
+    <div class="field"><label for="salePrice">Giá khuyến mãi (đ)</label><input class="input" id="salePrice" name="salePrice" inputmode="numeric" value="<%= p.salePrice || '' %>"></div>
+    <fieldset class="field full" style="border:0;padding:0;margin:0"><legend style="font-weight:600;font-size:.86rem;margin-bottom:8px">Danh mục</legend>
+      <div class="checks"><% categories.forEach((c) => { %><label class="check"><input type="checkbox" name="categories" value="<%= c.slug %>" <%= (p.categories || []).includes(c.slug) ? 'checked' : '' %>><%= c.name %></label><% }) %></div>
+    </fieldset>
+    <div class="field full"><label for="flowers">Thành phần hoa</label><input class="input" id="flowers" name="flowers" value="<%= p.flowers || '' %>"></div>
+    <div class="field full"><label for="short">Mô tả ngắn (hiện dưới giá, dùng làm meta description)</label><textarea class="textarea" id="short" name="short" maxlength="300"><%= p.short || '' %></textarea></div>
+    <div class="field full"><label for="description">Mô tả chi tiết (Markdown: **đậm**, - gạch đầu dòng, ## tiêu đề)</label><textarea class="textarea" id="description" name="description" style="min-height:220px"><%= p.description || '' %></textarea></div>
+    <div class="field full">
+      <span style="font-weight:600;font-size:.86rem">Ảnh hiện có (bỏ chọn để xóa)</span>
+      <div class="thumbs" style="margin-top:8px"><% (p.images || []).forEach((img) => { %><label><img src="<%= img %>" alt="" width="90" height="112"><span><input type="checkbox" name="keepImages" value="<%= img %>" checked> Giữ</span></label><% }) %></div>
+    </div>
+    <div class="field full"><label for="images">Tải ảnh mới (JPG/PNG/WebP, tối đa 5MB, nên dùng ảnh dọc 4:5)</label><input class="input" id="images" type="file" name="images" accept="image/jpeg,image/png,image/webp,image/avif" multiple></div>
+    <div class="checks full">
+      <label class="check"><input type="checkbox" name="active" <%= p.active !== false ? 'checked' : '' %>> Đang bán</label>
+      <label class="check"><input type="checkbox" name="inStock" <%= p.inStock !== false ? 'checked' : '' %>> Còn hàng</label>
+      <label class="check"><input type="checkbox" name="featured" <%= p.featured ? 'checked' : '' %>> Nổi bật trang chủ</label>
+      <label class="check"><input type="checkbox" name="bestseller" <%= p.bestseller ? 'checked' : '' %>> Bán chạy</label>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px"><button class="btn btn-primary" type="submit">Lưu sản phẩm</button></div>
+</form>
+<% if (p.id) { %>
+<form method="post" action="/admin/san-pham/<%= p.id %>/xoa" data-confirm="Xóa vĩnh viễn sản phẩm này?" style="margin-top:16px">
+  <input type="hidden" name="_csrf" value="<%= csrf %>"><button class="btn btn-danger btn-sm" type="submit">Xóa sản phẩm</button>
+</form>
+<% } %>
+<%- include('_bottom') %>

@@ -1,0 +1,14 @@
+<%- include('_top') %>
+<div class="admin-top">
+  <h1>Đơn hàng</h1>
+  <form method="get" style="display:flex;gap:8px;flex-wrap:wrap">
+    <select class="select" name="status" aria-label="Lọc trạng thái">
+      <option value="">Tất cả trạng thái</option>
+      <% Object.entries(STATUS).forEach(([k, label]) => { %><option value="<%= k %>" <%= status === k ? 'selected' : '' %>><%= label %></option><% }) %>
+    </select>
+    <input class="input" style="min-height:42px;width:220px" name="q" value="<%= q %>" placeholder="Mã đơn, tên, SĐT…" aria-label="Tìm đơn">
+    <button class="btn btn-dark btn-sm" type="submit">Lọc</button>
+  </form>
+</div>
+<%- include('_orders-table', { list }) %>
+<%- include('_bottom') %>

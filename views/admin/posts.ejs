@@ -1,0 +1,18 @@
+<%- include('_top') %>
+<div class="admin-top"><h1>Bài viết</h1><a class="btn btn-primary btn-sm" href="/admin/bai-viet/moi">+ Viết bài mới</a></div>
+<div class="table-wrap">
+  <table class="t">
+    <thead><tr><th></th><th>Tiêu đề</th><th>Ngày đăng</th><th>Trạng thái</th></tr></thead>
+    <tbody>
+      <% list.forEach((post) => { %>
+      <tr>
+        <td><img src="<%= post.image %>" alt="" width="48" height="60"></td>
+        <td><a href="/admin/bai-viet/<%= post.id %>"><%= post.title %></a><br><small class="muted">/blog/<%= post.slug %></small></td>
+        <td><%= formatDate(post.publishedAt) %></td>
+        <td><span class="status-pill <%= post.published === false ? 'cancelled' : 'done' %>"><%= post.published === false ? 'Nháp' : 'Đã đăng' %></span></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('_bottom') %>
