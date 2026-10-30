@@ -4,4 +4,5 @@ data/
 *.log
 .DS_Store
 Thumbs.db
-.claude/
+.claude/*
+!.claude/commands/
